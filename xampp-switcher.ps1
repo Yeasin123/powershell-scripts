@@ -9,6 +9,12 @@ $phpVersions = @{
     '8.1' = 'C:\xampp-8.1\php';
 }
 
+$mysqls = @{
+    '7.4'='C:\xampp-7.4\mysql\bin';
+    '8.0'='C:\xampp-8.0\mysql\bin';
+    '8.1'='C:\xampp-8.1\mysql\bin';
+}
+
 $currentVersion = ($path.split(';') | Where-Object { $_ -match '.*(php)$' })
 $currentVersion = $phpVersions.GetEnumerator() | Where-Object { $_.Value -eq $currentVersion }
 if ($null -ne $currentVersion) {
@@ -71,7 +77,9 @@ Invoke-Expression $apacheStarts[$selectedVersion]
 Invoke-Expression $mysqlStarts[$selectedVersion]
 
 $path = ($path.split(';') | Where-Object { $_ -match '.*(?<!php)$' })
+$path = ($path.split(';') | Where-Object { $_ -match '.*(?<!mysql\\bin)$' })
 $path += $phpVersions[$selectedVersion]
+$path += $mysqls[$selectedVersion]
 $path = $path -join ';'
 
 [System.Environment]::SetEnvironmentVariable(
