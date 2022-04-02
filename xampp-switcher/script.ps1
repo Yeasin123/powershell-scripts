@@ -84,7 +84,9 @@ if ($null -eq $selectdXamppPHPVersion) {
   return
 }
 
-stopServices($promptPHPVersion)
+if ($null -ne $envPHPVersion) {
+  stopServices($envPHPVersion)
+}
 startServices($promptPHPVersion)
 updateEnvironmentPath($promptPHPVersion)
 
